@@ -42,6 +42,8 @@ public class LoginControl extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", u);
             session.setMaxInactiveInterval(5*60);
+            boolean keyExists = dao.checkKey(Integer.parseInt(u.getId()));
+            session.setAttribute("keyExists", keyExists);
 
             Cookie userC = new Cookie("userC", username);
             Cookie passC = new Cookie("passC", password);

@@ -3,6 +3,7 @@ package dao;
 import context.DBConnect;
 import entity.*;
 import entity.CreateKey;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -22,14 +23,14 @@ public class DAO {
     PreparedStatement ps;
     ResultSet rs;
 
-    public List<Product> getAllProduct(){
+    public List<Product> getAllProduct() {
         List<Product> list = new ArrayList<>();
         String query = "select * from sanpham";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -45,14 +46,14 @@ public class DAO {
         return list;
     }
 
-    public List<Category> getAllCategory(){
+    public List<Category> getAllCategory() {
         List<Category> list = new ArrayList<>();
         String query = "select * from loaisp";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Category(
                         rs.getString(1),
                         rs.getString(2)
@@ -71,7 +72,7 @@ public class DAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, cid);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -94,7 +95,7 @@ public class DAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, id);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -118,7 +119,7 @@ public class DAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, "%" + txtSearch + "%");
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -134,7 +135,7 @@ public class DAO {
         return list;
     }
 
-    public User login(String user, String pass){
+    public User login(String user, String pass) {
         String query = "select * from nguoidung " +
                 "where ten_dangnhap = ? and matkhau = ?";
         try {
@@ -143,7 +144,7 @@ public class DAO {
             ps.setString(1, user);
             ps.setString(2, pass);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return new User(
                         rs.getString(1),
                         rs.getString(2),
@@ -161,7 +162,7 @@ public class DAO {
         return null;
     }
 
-    public User checkUser(String user){
+    public User checkUser(String user) {
         String query = "select * from nguoidung " +
                 "where ten_dangnhap = ?";
         try {
@@ -169,7 +170,7 @@ public class DAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, user);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return new User(
                         rs.getString(1),
                         rs.getString(2),
@@ -211,8 +212,9 @@ public class DAO {
         }
         return null;
     }
+
     public void signup(String hoten, String sdt, String diachi, String email, String username, String matkhau) {
-        String query ="INSERT INTO nguoidung (hoten, sdt, diachi, email, ten_dangnhap, matkhau) VALUES\n" +
+        String query = "INSERT INTO nguoidung (hoten, sdt, diachi, email, ten_dangnhap, matkhau) VALUES\n" +
                 "(?,?,?,?,?,?)";
         try {
             conn = new DBConnect().getConnection();
@@ -228,13 +230,13 @@ public class DAO {
         }
     }
 
-    public int getTotalProduct(){
+    public int getTotalProduct() {
         String query = "select count(*) from sanpham";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (Exception e) {
@@ -242,7 +244,7 @@ public class DAO {
         return 0;
     }
 
-    public List<Product> pagingProduct(int index){
+    public List<Product> pagingProduct(int index) {
         List<Product> list = new ArrayList<>();
         String query = "select * from sanpham limit ?, 10";
 
@@ -251,7 +253,7 @@ public class DAO {
             ps = conn.prepareStatement(query);
             ps.setInt(1, (index - 1) * 10);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -267,7 +269,7 @@ public class DAO {
         return list;
     }
 
-    public List<Category> getCategoryByPID(String pID){
+    public List<Category> getCategoryByPID(String pID) {
         List<Category> list = new ArrayList<>();
         String query = "select * from loaisp where id = ?";
         try {
@@ -275,7 +277,7 @@ public class DAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, pID);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Category(
                         rs.getString(1),
                         rs.getString(2)
@@ -287,7 +289,7 @@ public class DAO {
     }
 
 
-    public void changePass(String username, String pass){
+    public void changePass(String username, String pass) {
         String query = "update nguoidung\n" +
                 "SET matkhau = ?\n" +
                 "WHERE ten_dangnhap = ?";
@@ -297,13 +299,13 @@ public class DAO {
             ps.setString(1, pass);
             ps.setString(2, username);
             ps.executeUpdate();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
     public static void sendMail(String to, String subject, String text) {
-        String username ="caodat.ltw@gmail.com";
-        String password ="hdrdxvrstejsioem";
+        String username = "caodat.ltw@gmail.com";
+        String password = "hdrdxvrstejsioem";
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
@@ -331,10 +333,10 @@ public class DAO {
     }
 
     public void passRecovery(String email) {
-        sendMail(email, "PassWord","Your Account PassWord: " + checkEmail(email).getPass());
+        sendMail(email, "PassWord", "Your Account PassWord: " + checkEmail(email).getPass());
     }
 
-    public List<String> listImage(String pID){
+    public List<String> listImage(String pID) {
         String query = "select anhchitiet from chitietsanpham where id_sanpham = ?";
         List<String> image = new ArrayList<>();
         String listImage = "";
@@ -346,17 +348,17 @@ public class DAO {
             while (rs.next()) {
                 listImage = rs.getString(1);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         StringTokenizer st = new StringTokenizer(listImage, ";");
-        while (st.hasMoreTokens()){
+        while (st.hasMoreTokens()) {
             image.add(st.nextToken());
         }
         return image;
 
     }
 
-    public void changeProfile(String fullname, String email, String username, String phone, String address, String id){
+    public void changeProfile(String fullname, String email, String username, String phone, String address, String id) {
         String query = "update nguoidung\n" +
                 "SET hoten = ?, diachi = ?, sdt = ?, ten_dangnhap = ?\n" +
                 "WHERE id = ?";
@@ -369,18 +371,18 @@ public class DAO {
             ps.setString(4, username);
             ps.setString(5, id);
             ps.executeUpdate();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
-    public List<Blog> getAllBlog(){
+    public List<Blog> getAllBlog() {
         List<Blog> list = new ArrayList<>();
         String query = "select * from tintuc";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Blog(
                         rs.getString(1),
                         rs.getString(2),
@@ -392,7 +394,7 @@ public class DAO {
                         rs.getString(8)
                 ));
             }
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         return list;
     }
@@ -404,7 +406,7 @@ public class DAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, id);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return new Blog(
                         rs.getString(1),
                         rs.getString(2),
@@ -416,19 +418,19 @@ public class DAO {
                         rs.getString(8)
                 );
             }
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         return null;
     }
 
-    public List<Product> getNewProduct(){
+    public List<Product> getNewProduct() {
         List<Product> list = new ArrayList<>();
         String query = "select * from sanpham limit 10";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -444,14 +446,14 @@ public class DAO {
         return list;
     }
 
-    public List<Product> getSaleProduct(){
+    public List<Product> getSaleProduct() {
         List<Product> list = new ArrayList<>();
         String query = "select * from sanpham order by giagoc asc limit 10";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -467,29 +469,29 @@ public class DAO {
         return list;
     }
 
-    public int getTotalUser(){
+    public int getTotalUser() {
         String query = "Select count(*) from nguoidung";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return rs.getInt(1);
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         return 0;
     }
 
-    public List<User> getNewUser(){
+    public List<User> getNewUser() {
         List<User> list = new ArrayList<>();
         String query = "Select * from nguoidung order by id desc limit 5";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new User(
                         rs.getString(1),
                         rs.getString(2),
@@ -506,19 +508,19 @@ public class DAO {
         return list;
     }
 
-    public void deleteProduct(String pID){
-        String query ="delete from sanpham where id = ?";
+    public void deleteProduct(String pID) {
+        String query = "delete from sanpham where id = ?";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             ps.setString(1, pID);
             ps.executeUpdate();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
-    public void insertProduct(String name, String des, String image, String price, String priceDis, String cateID){
-        String query ="INSERT INTO `sanpham` ( `tensp`, `mota`, `hinhanh`, `giagoc`, `giakm`, `id_loaisp`) " +
+    public void insertProduct(String name, String des, String image, String price, String priceDis, String cateID) {
+        String query = "INSERT INTO `sanpham` ( `tensp`, `mota`, `hinhanh`, `giagoc`, `giakm`, `id_loaisp`) " +
                 "VALUES(?,?,?,?,?,?)";
         try {
             conn = new DBConnect().getConnection();
@@ -530,11 +532,11 @@ public class DAO {
             ps.setString(5, priceDis);
             ps.setString(6, cateID);
             ps.executeUpdate();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
-    public boolean updateProduct(String id, String name, String des, String image, String price, String priceDis, String cateID){
+    public boolean updateProduct(String id, String name, String des, String image, String price, String priceDis, String cateID) {
         String query = "update sanpham set tensp = ?,\n" +
                 "mota = ?,\n" +
                 "hinhanh = ?,\n" +
@@ -560,14 +562,14 @@ public class DAO {
         return false;
     }
 
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         List<User> list = new ArrayList<>();
         String query = "select * from nguoidung";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new User(
                         rs.getString(1),
                         rs.getString(2),
@@ -584,32 +586,24 @@ public class DAO {
         return list;
     }
 
-    public void deleteUser(String uID){
-        String query ="delete from nguoidung where id = ?";
+    public void deleteUser(String uID) {
+        String query = "delete from nguoidung where id = ?";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             ps.setString(1, uID);
             ps.executeUpdate();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
-    public static void main(String[] args) {
-        DAO dao = new DAO();
-        List<User> list = dao.getAllUser();
-        for(User u : list){
-            System.out.println(u);
-        }
-
-    }
-  public List<Product> getProductByPrice(double giadau, double giacuoi) {
+    public List<Product> getProductByPrice(double giadau, double giacuoi) {
         List<Product> list = new ArrayList<>();
         String query = "select * from sanpham where giagoc between ? and ?";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
-            ps.setDouble(1,giadau);
+            ps.setDouble(1, giadau);
             ps.setDouble(2, giacuoi);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -627,8 +621,9 @@ public class DAO {
         }
         return list;
     }
-    public void insertCategory( String cName){
-        String query ="INSERT INTO `loaisp` (  `tenloai`) " +
+
+    public void insertCategory(String cName) {
+        String query = "INSERT INTO `loaisp` (  `tenloai`) " +
                 "VALUES(?)";
         try {
             conn = new DBConnect().getConnection();
@@ -636,10 +631,11 @@ public class DAO {
             ps.setString(1, cName);
 
             ps.executeUpdate();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
-    public void deleteCategory(String cID ) {
+
+    public void deleteCategory(String cID) {
         String query = "delete from loaisp where id = ?";
         try {
             conn = new DBConnect().getConnection();
@@ -651,7 +647,8 @@ public class DAO {
 
 
     }
-    public boolean updateCategory(String id, String name){
+
+    public boolean updateCategory(String id, String name) {
         String query = "update loaisp set tenloai = ?,\n" +
 
                 "WHERE id = ?";
@@ -667,7 +664,8 @@ public class DAO {
         }
         return false;
     }
-     public List<Product> getAllProductAToZ(){
+
+    public List<Product> getAllProductAToZ() {
         List<Product> list = new ArrayList<>();
         String query = "SELECT *\n" +
                 "from sanpham\n" +
@@ -676,7 +674,7 @@ public class DAO {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -691,7 +689,8 @@ public class DAO {
         }
         return list;
     }
-    public List<Product> getAllProductZToA(){
+
+    public List<Product> getAllProductZToA() {
         List<Product> list = new ArrayList<>();
         String query = "SELECT *\n" +
                 "from sanpham\n" +
@@ -700,7 +699,7 @@ public class DAO {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -715,7 +714,8 @@ public class DAO {
         }
         return list;
     }
-    public List<Product> getAllProductMinToMax(){
+
+    public List<Product> getAllProductMinToMax() {
         List<Product> list = new ArrayList<>();
         String query = "SELECT *\n" +
                 "from sanpham\n" +
@@ -724,7 +724,7 @@ public class DAO {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -739,7 +739,8 @@ public class DAO {
         }
         return list;
     }
-    public List<Product> getAllProductMaxToMin(){
+
+    public List<Product> getAllProductMaxToMin() {
         List<Product> list = new ArrayList<>();
         String query = "SELECT *\n" +
                 "from sanpham\n" +
@@ -748,7 +749,7 @@ public class DAO {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 list.add(new Product(
                         rs.getString(1),
                         rs.getString(2),
@@ -770,13 +771,11 @@ public class DAO {
 
     public void addCTHoaDon(int idHoaDon, int soLuong, int idSanPham) {
     }
-    public void create_key(){
-        final String DB_URL = "jdbc:mysql://localhost:3306/data";
-        final String DB_USER = "root";
-        final String DB_PASSWORD = "";
+
+    public void create_key() {
         try {
             // Kết nối đến cơ sở dữ liệu
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            Connection connection = new DBConnect().getConnection();
 
             // Lấy thông tin người dùng từ bảng nguoidung
             String selectQuery = "SELECT id, hoten FROM nguoidung";
@@ -802,5 +801,33 @@ public class DAO {
             e.printStackTrace();
         }
     }
+    public boolean checkKey(int uId){
+        try {
+            conn = new DBConnect().getConnection();
+            String sql = "Select * from public_keys where user_id = ? and status = 'Xac thuc'";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, uId);
+            rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
+    public void removeAuthKey(int uId){
+        try {
+            conn = new DBConnect().getConnection();
+            String sql = "delete from public_keys where user_id = ? and status = 'Xac thuc'";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, uId);
+            ps.executeUpdate();
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        DAO dao = new DAO();
+        System.out.println(dao.checkKey(1));
+    }
+}
 
