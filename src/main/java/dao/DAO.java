@@ -816,10 +816,26 @@ public class DAO {
     public void removeAuthKey(int uId){
         try {
             conn = new DBConnect().getConnection();
-            String sql = "delete from public_keys where user_id = ? and status = 'Xac thuc'";
+            String sql = "update public_keys set status = 'Huy' where user_id = ? and status = 'Xac thuc'";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, uId);
             ps.executeUpdate();
+            conn.close();
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void checkExpiredKey(int uId){
+        try {
+            conn = new DBConnect().getConnection();
+            String sql = "UPDATE public_keys\n" +
+                    "SET status = 'Huy'\n" +
+                    "WHERE status <> 'Huy' AND created_at < DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND user_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, uId);
+            ps.executeUpdate();
+            conn.close();
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
@@ -827,7 +843,8 @@ public class DAO {
 
     public static void main(String[] args) {
         DAO dao = new DAO();
-        System.out.println(dao.checkKey(1));
+        System.out.println(dao.checkKey(5));
+        dao.removeAuthKey(5);
     }
 }
 

@@ -188,7 +188,7 @@ for (Product p : list){
                 <div class="row align-items-center">
                     <div class="col-lg-3">
                         <!-- Sticky Logo Start -->
-                        <a class="sticky-logo" href="index.html">
+                        <a class="sticky-logo" href="home">
                             <img src="image/main-logo.png" alt="logo">
                         </a>
                         <!-- Sticky Logo End -->
