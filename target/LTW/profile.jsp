@@ -46,6 +46,7 @@
                 <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i> Địa chỉ thanh toán</a>
                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Cập nhật tài khoản</a>
                 <a href="changepass" ><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                <a href="#key-management" data-bs-toggle="tab"><i class="fa fa-key"></i> Quản lý khóa</a>
               </div>
             </div>
             <!-- My Account Tab Menu End -->
@@ -153,7 +154,7 @@
                       Thay đổi thành công
                     </div>
                     <div class="account-details-form">
-                      <form action="#" method="post" id="myForm">
+                      <form action="profile" method="post" id="myForm">
                         <div class="row">
                           <div class="col-12 mb-30">
                             <input id="first-name" placeholder="Họ và Tên" type="text" name="fullname" required>
@@ -182,6 +183,52 @@
                   </div>
                 </div>
                 <!-- Single Tab Content End -->
+                <!-- Single Tab Content Start -->
+                <div class="tab-pane fade" id="key-management" role="tabpanel">
+                  <div class="myaccount-content">
+                    <h3 class="text-center">Quản lý khóa</h3>
+
+                    <!-- Thông báo trạng thái hiện tại -->
+                    <div id="keyStatus" class="text-center mb-3">
+                      <c:set var="keyExists" value="${sessionScope.keyExists}" />
+                      <c:choose>
+                        <c:when test="${keyExists}">
+                          <p class="text-success">Bạn đã có key.</p>
+                        </c:when>
+                        <c:otherwise>
+                          <p class="text-warning">Bạn chưa có key.</p>
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Form yêu cầu đưa key về trạng thái không chấp nhận xác thực mới -->
+                    <form action="#" method="post" id="revokeKeyForm">
+                      <div class="row justify-content-center mt-3">
+                        <div class="col-12 col-md-6 text-center">
+                          <p class="text-danger">Đưa key về trạng thái không chấp nhận mới</p>
+                          <button class="btn btn-danger" type="submit">Yêu cầu</button>
+                        </div>
+                      </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <!-- Form tạo key mới -->
+                    <form action="#" method="post" id="generateNewKeyForm">
+                      <div class="row justify-content-center mt-3">
+                        <div class="col-12 col-md-6 text-center">
+                          <p class="text-danger">Tạo key mới khi đã đưa key về trạng thái không chấp nhận</p>
+                          <button class="btn btn-success" type="submit">Tạo key mới</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- Single Tab Content End -->
+
               </div>
             </div>
             <!-- My Account Tab Content End -->
@@ -224,6 +271,38 @@
 
         return true;
       }
+    });
+  });
+
+  $(document).ready(function() {
+    // Bắt sự kiện khi nhấn vào nút "Yêu cầu đưa key về trạng thái không chấp nhận mới"
+    $('#revokeKeyForm').submit(function(event) {
+      // Ngăn chặn gửi form mặc định
+      event.preventDefault();
+
+      // Hiển thị hộp thoại xác nhận
+      var confirmResult = confirm("Bạn có chắc chắn muốn yêu cầu đưa key về trạng thái không chấp nhận mới không?");
+
+      // Nếu người dùng xác nhận, gửi yêu cầu đến servlet
+      if (confirmResult) {
+        console.log("revokeKey");
+        $.post('KeyManagementServlet', { action: 'revokeKey' }, function(response) {
+          // Xử lý kết quả nếu cầu
+          alert(response);
+        });
+      }
+    });
+
+    // Bắt sự kiện khi nhấn vào nút "Tạo key mới"
+    $('#generateNewKeyForm').submit(function(event) {
+      // Ngăn chặn gửi form mặc định
+      event.preventDefault();
+      console.log("generateNewKey");
+      // Gửi yêu cầu đến servlet
+      // $.post('KeyManagementServlet', { action: 'generateNewKey' }, function(response) {
+      //   // Xử lý kết quả nếu cần
+      //
+      // });
     });
   });
 </script>

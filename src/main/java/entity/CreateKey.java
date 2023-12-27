@@ -1,4 +1,6 @@
 package entity;
+import context.DBConnect;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,7 +59,7 @@ public class CreateKey {
             storePublicKeyInDatabase(userId, userName, keyPair.getPublic());
 
             // Lưu trữ private key vào file
-            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"/ltw22-main/key","private_key.pem");
+            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"/ATBMHTTT/key","private_key.pem");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,7 +71,7 @@ public class CreateKey {
         ResultSet resultSet = null;
 
         try {
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = new DBConnect().getConnection();
 
             String checkUserIdQuery = "SELECT COUNT(*) FROM public_keys WHERE user_id = ?";
             preparedStatement = connection.prepareStatement(checkUserIdQuery);
@@ -112,7 +114,7 @@ public class CreateKey {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = new DBConnect().getConnection();
 
             // Chuẩn bị truy vấn để chèn public key vào cơ sở dữ liệu
             String insertQuery = "INSERT INTO public_keys (user_id, user_name, key_value,status) VALUES (?, ?, ?,?)";

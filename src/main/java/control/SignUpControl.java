@@ -29,10 +29,10 @@ public class SignUpControl extends HttpServlet {
 
         if(pass.equals(re_pass)){
             DAO dao = new DAO();
-            User u = dao.checkUser(email);
+            User u = dao.checkUser(username);
             if(u == null){
                 dao.signup(fullName, phone, address, email, username, pass);
-            dao.create_key();
+                dao.create_key();
                 response.sendRedirect("login");
             } else {
                 request.setAttribute("mess2", "error");
