@@ -30,9 +30,9 @@ public class KeyManagementServlet extends HttpServlet {
             if ("revokeKey".equals(action)) {
                 if (keyExists){
                     dao.removeAuthKey(uId);
-                    response.getWriter().write("Yêu cầu đưa key về trạng thái không chấp nhận mới đã được xử lý");
+                    response.getWriter().write("Yêu cầu của bạn đã được xử lý");
                 } else {
-                    response.getWriter().write("Yêu cầu xử lý không thành công");
+                    response.getWriter().write("Yêu cầu của bạn không thành công");
                 }
 
             } else {

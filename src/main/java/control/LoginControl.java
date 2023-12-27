@@ -44,6 +44,7 @@ public class LoginControl extends HttpServlet {
             session.setMaxInactiveInterval(5*60);
             boolean keyExists = dao.checkKey(Integer.parseInt(u.getId()));
             session.setAttribute("keyExists", keyExists);
+            dao.checkExpiredKey(Integer.parseInt(u.getId()));
 
             Cookie userC = new Cookie("userC", username);
             Cookie passC = new Cookie("passC", password);

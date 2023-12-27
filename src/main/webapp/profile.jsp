@@ -193,10 +193,10 @@
                       <c:set var="keyExists" value="${sessionScope.keyExists}" />
                       <c:choose>
                         <c:when test="${keyExists}">
-                          <p class="text-success">Bạn đã có key.</p>
+                          <p class="text-success" style="font-size: large">Tài khoản của bạn đã có key</p>
                         </c:when>
                         <c:otherwise>
-                          <p class="text-warning">Bạn chưa có key.</p>
+                          <p class="text-warning" style="font-size: large">Tài khoản của bạn chưa có key</p>
                         </c:otherwise>
                       </c:choose>
                     </div>
