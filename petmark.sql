@@ -135,7 +135,7 @@ CREATE TABLE `hoadon`  (
   `tongtien` double NOT NULL,
   `pt_thanhtoan` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `ghichu` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `trangthai` int NOT NULL,
+  `signature` varchar(500) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id_ngdung`(`id_ngdung` ASC) USING BTREE,
   CONSTRAINT `id_ngdung` FOREIGN KEY (`id_ngdung`) REFERENCES `nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
