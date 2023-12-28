@@ -86,7 +86,7 @@
                                         <div class="row">
                                             <!-- Cart Total -->
                                             <div class="col-12">
-                                                <div class="checkout-cart-total">
+                                                <div class="checkout-cart-total" style="position: absolute;margin-top: -503px;margin-left: 750px;">
                                                     <h2 class="checkout-title">Đơn hàng của bạn</h2>
 
 
