@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.util.Base64;
 
 public class ElectronicSignatureVerification{
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/data";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/petmark";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
 
@@ -25,7 +25,7 @@ public class ElectronicSignatureVerification{
             // Lấy private key từ file
             int userId = 2; // Thay đổi giá trị ID người dùng tương ứng
             String userName = "chieu";
-            String directory =  "/ltw22-main/key";
+            String directory =  "C:\\Users\\DELL\\ATBMHTTT\\key";
             PrivateKey privateKey = getPrivateKeyFromFile(userId, userName,directory);
 
             // Người mua sử dụng private key để tạo chữ ký cho dữ liệu
@@ -41,7 +41,7 @@ public class ElectronicSignatureVerification{
         }
     }
 
-    private static PublicKey getPublicKeyFromDatabase(int userId) throws Exception {
+    public static PublicKey getPublicKeyFromDatabase(int userId) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -78,7 +78,7 @@ public class ElectronicSignatureVerification{
         }
     }
 
-    private static PrivateKey getPrivateKeyFromFile(int userId, String userName, String directory) throws Exception {
+    public static PrivateKey getPrivateKeyFromFile(int userId, String userName, String directory) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -124,7 +124,7 @@ public class ElectronicSignatureVerification{
     }
 
 
-    private static String signData(String data, PrivateKey privateKey) throws Exception {
+    public static String signData(String data, PrivateKey privateKey) throws Exception {
         Signature signature = Signature.getInstance("SHA256withRSA");
         signature.initSign(privateKey);
         signature.update(data.getBytes());
@@ -132,7 +132,7 @@ public class ElectronicSignatureVerification{
         return Base64.getEncoder().encodeToString(signedBytes);
     }
 
-    private static boolean verifySignature(String data, String signature, PublicKey publicKey) throws Exception {
+    public static boolean verifySignature(String data, String signature, PublicKey publicKey) throws Exception {
         Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initVerify(publicKey);
         sig.update(data.getBytes());

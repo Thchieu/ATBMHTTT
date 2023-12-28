@@ -69,24 +69,38 @@ public class CheckoutControl extends HttpServlet {
             String sinature1 = signature;
             boolean isVerified = verifySignature(data, signature, publicKey);
             boolean checkKey = dao.checkKey(userId);
+            if (checkKey == true) {
+                if (isVerified == true){
+                HashMap<Product, Integer> map = new HashMap<>();
+                for (Product p : list) {
+                    total += p.getPrice();
+                    map.put(p, map.getOrDefault(p, 0) + 1);
+                }
 
-            HashMap<Product, Integer> map = new HashMap<>();
-            for (Product p : list) {
-                total += p.getPrice();
-                map.put(p, map.getOrDefault(p, 0) + 1);
+                Bill bill = new Bill(invoiceNumber1, user, ten, new Timestamp(date.getTime()), dia_chi_giao_hang, pt_thanhtoan, ghichu, total1 + total, sinature1);
+                int idBill = billDAO.addBill(bill);
+                for (Map.Entry<Product, Integer> entry : map.entrySet()) {
+                    Product product = entry.getKey();
+                    int soLuong = entry.getValue();
+                    System.out.println(idBill);
+                    billDAO.addBillDetails(new BillDetails(idBill, product, soLuong, product.getPrice()));
+                }
+                list.clear();
+                    request.setAttribute("message", "Đặt hàng thành công");
+
+                    // Chuyển hướng đến trang hiển thị thông báo
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
+                    dispatcher.forward(request, response);
+            }else {
+                    request.setAttribute("message", "Xác thực đơn hàng không thành công");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
+                    dispatcher.forward(request, response);
+                }
+            }else {
+                request.setAttribute("message", "Xác thực người dùng không thành công");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
+                dispatcher.forward(request, response);
             }
-
-            Bill bill = new Bill(invoiceNumber1, user, ten, new Timestamp(date.getTime()), dia_chi_giao_hang, pt_thanhtoan, ghichu, total1 + total, sinature1);
-            int idBill = billDAO.addBill(bill);
-            for (Map.Entry<Product, Integer> entry : map.entrySet()) {
-                Product product = entry.getKey();
-                int soLuong = entry.getValue();
-                System.out.println(idBill);
-                billDAO.addBillDetails(new BillDetails(idBill, product, soLuong, product.getPrice()));
-            }
-            list.clear();
-            response.sendRedirect("checkout.jsp");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
