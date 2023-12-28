@@ -16,7 +16,7 @@ public class BillDAO {
         ResultSet resultSet = null;
         int generatedId = -1;
 
-        String query = "INSERT INTO hoadon (ngaylap_hd,id_ngdung,ten,dia_chi_giao_hang,tongtien,pt_thanhtoan,ghichu,trangthai) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO hoadon (ngaylap_hd,id_ngdung,ten,dia_chi_giao_hang,tongtien,pt_thanhtoan,ghichu,signature) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             conn = new DBConnect().getConnection();
             ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -28,7 +28,7 @@ public class BillDAO {
             ps.setDouble(5, bill.getTongTien());
             ps.setString(6, bill.getPt_thanhToan());
             ps.setString(7, bill.getGhiChu());
-            ps.setString(8, bill.getTrangThai());
+            ps.setString(8, bill.getSignature());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
