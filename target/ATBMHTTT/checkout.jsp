@@ -86,7 +86,7 @@
                                         <div class="row">
                                             <!-- Cart Total -->
                                             <div class="col-12">
-                                                <div class="checkout-cart-total">
+                                                <div class="checkout-cart-total" style="position: absolute;margin-top: -507px;margin-left: 750px;">
                                                     <h2 class="checkout-title">Đơn hàng của bạn</h2>
 
 
@@ -112,10 +112,18 @@
                                                     %>
 
                                                     <div class="term-block">
-                                                        <input type="checkbox" id="accept_terms2">
+                                                        <input type="checkbox" id="accept_terms2" onclick="togglePasswordInput()">
+                                                        <div class="col-12 mb--20">
+                                                            <label>Mật khẩu*</label>
+                                                            <input type="password" placeholder="Mật khẩu" id="passwordInput" name="password" style="display: none;">
+                                                        </div>
                                                         <label for="accept_terms2">Tôi đã đọc và chấp nhận các điều khoản & điều kiện</label>
                                                     </div>
                                                     <button class="place-order w-100">Đặt hàng</button>
+                                                    <div class="col-12 mb--20">
+                                                        <label>Mật khẩu*</label>
+                                                        <input type="password" placeholder="Mật khẩu" id="passwordInput" name="password" style="display: none;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -134,5 +142,13 @@
     <script src="js/plugins.js"></script>
     <script src="js/ajax-mail.js"></script>
     <script src="js/custom.js"></script>
+        <script>
+            function togglePasswordInput() {
+                var passwordInput = document.getElementById("passwordInput");
+
+                // Chuyển đổi thuộc tính hiển thị dựa trên trạng thái checkbox
+                passwordInput.style.display = document.getElementById("accept_terms2").checked ? "block" : "none";
+            }
+        </script>
 </body>
 </html>

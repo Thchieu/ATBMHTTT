@@ -11,10 +11,10 @@ public class Bill {
     private String pt_thanhToan;
     private String ghiChu;
     private double tongTien;
-    private String trangThai;
+    private String signature;
 
 
-    public Bill(int id, User nguoiDung, String ten, Timestamp ngayLap_hoaDon, String diachi, String pt_thanhToan, String ghiChu, double tongTien, String trangThai) {
+    public Bill(int id, User nguoiDung, String ten, Timestamp ngayLap_hoaDon, String diachi, String pt_thanhToan, String ghiChu, double tongTien, String signature) {
         this.id = id;
         this.nguoiDung = nguoiDung;
         this.ten = ten;
@@ -23,7 +23,7 @@ public class Bill {
         this.pt_thanhToan = pt_thanhToan;
         this.ghiChu = ghiChu;
         this.tongTien = tongTien;
-        this.trangThai = trangThai;
+        this.signature = signature;
     }
 
     public int getId() {
@@ -82,12 +82,12 @@ public class Bill {
         this.tongTien = tongTien;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getSignature() {
+        return signature;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     public String getTen() {

@@ -11,8 +11,12 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.nio.file.FileStore;
+import java.security.PrivateKey;
 import java.sql.Timestamp;
 import java.util.*;
+
+import static entity.ElectronicSignatureVerification.getPrivateKeyFromFile;
+import static entity.ElectronicSignatureVerification.signData;
 
 @WebServlet(name = "CheckoutControl", value = "/CheckoutControl")
 public class CheckoutControl extends HttpServlet {
@@ -40,7 +44,7 @@ public class CheckoutControl extends HttpServlet {
         String dia_chi_giao_hang = request.getParameter("dia_chi_giao_hang");
         String pt_thanhtoan = request.getParameter("pt_thanhtoan");
         String ghichu = request.getParameter("ghichu");
-
+        String password = request.getParameter("password");
         DAO dao = new DAO();
         List<Product> list = CartDAO.getGiohang();
 
@@ -50,18 +54,25 @@ public class CheckoutControl extends HttpServlet {
         try {
             Date date = new Date();
             int invoiceNumber1 = (int) ((Math.random() * 10000000000L) + 1000000000L);
-            int count = 0;
-            int quantity = 1;
+
             double total = 0;
-            double totalproduct = 0;
+
             int total1 = 0;
+
+            int userId = Integer.parseInt(user.getId()); // Thay đổi giá trị ID người dùng tương ứng
+            String userName = user.getFullName();
+            String directory =  "C:\\Users\\DELL\\ATBMHTTT\\key";
+            PrivateKey privateKey = getPrivateKeyFromFile(userId, userName,directory);
+            String data = ten + " " +dia_chi_giao_hang +" "+pt_thanhtoan +" " +ghichu;
+            String signature = signData(data, privateKey);
+            String sinature1 = signature;
             HashMap<Product, Integer> map = new HashMap<>();
             for (Product p : list) {
                 total += p.getPrice();
                 map.put(p, map.getOrDefault(p, 0) + 1);
             }
 
-            Bill bill = new Bill(invoiceNumber1, user, ten, new Timestamp(date.getTime()), dia_chi_giao_hang, pt_thanhtoan, ghichu, total1 + total, "1");
+            Bill bill = new Bill(invoiceNumber1, user, ten, new Timestamp(date.getTime()), dia_chi_giao_hang, pt_thanhtoan, ghichu, total1 + total, sinature1);
             int idBill = billDAO.addBill(bill);
             for (Map.Entry<Product, Integer> entry : map.entrySet()) {
                 Product product = entry.getKey();
