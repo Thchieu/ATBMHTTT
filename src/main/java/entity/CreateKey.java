@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.util.Base64;
 
 public class CreateKey {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/data";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/petmark";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
 
@@ -59,7 +59,7 @@ public class CreateKey {
             storePublicKeyInDatabase(userId, userName, keyPair.getPublic());
 
             // Lưu trữ private key vào file
-            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"/ATBMHTTT/key","private_key.pem");
+            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"C:\\Users\\DELL\\ATBMHTTT\\key","private_key.pem");
         } catch (Exception e) {
             e.printStackTrace();
         }

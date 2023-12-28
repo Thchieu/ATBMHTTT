@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="LTW:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>LTW</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ATBMHTTT.war">
+      <element id="artifact" artifact-name="LTW:war exploded" />
+    </root>
+  </artifact>
+</component>

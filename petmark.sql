@@ -22,13 +22,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `chitietsanpham`;
 CREATE TABLE `chitietsanpham`  (
-                                   `id` int NOT NULL AUTO_INCREMENT,
-                                   `anhchitiet` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-                                   `motachitiet` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-                                   `id_sp` int NOT NULL,
-                                   PRIMARY KEY (`id`) USING BTREE,
-                                   INDEX `fk`(`id_sp` ASC) USING BTREE,
-                                   CONSTRAINT `fk` FOREIGN KEY (`id_sp`) REFERENCES `sanpham` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `id` int NOT NULL AUTO_INCREMENT,
+  `anhchitiet` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `motachitiet` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `id_sp` int NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk`(`id_sp` ASC) USING BTREE,
+  CONSTRAINT `fk` FOREIGN KEY (`id_sp`) REFERENCES `sanpham` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -106,16 +106,16 @@ INSERT INTO `chitietsanpham` VALUES (66, 'image/img-chitiet/66-1.jpg', 'THÀNH P
 -- ----------------------------
 DROP TABLE IF EXISTS `ct_hoadon`;
 CREATE TABLE `ct_hoadon`  (
-                              `id` int NOT NULL AUTO_INCREMENT,
-                              `id_hoadon` int NOT NULL,
-                              `id_sanpham` int NOT NULL,
-                              `soluong` int NOT NULL,
-                              `dongia` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                              PRIMARY KEY (`id`) USING BTREE,
-                              INDEX `id_hoadon`(`id_hoadon` ASC) USING BTREE,
-                              INDEX `id_sanpham`(`id_sanpham` ASC) USING BTREE,
-                              CONSTRAINT `id_hoadon` FOREIGN KEY (`id_hoadon`) REFERENCES `hoadon` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                              CONSTRAINT `id_sanpham` FOREIGN KEY (`id_sanpham`) REFERENCES `sanpham` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_hoadon` int NOT NULL,
+  `id_sanpham` int NOT NULL,
+  `soluong` int NOT NULL,
+  `dongia` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id_hoadon`(`id_hoadon` ASC) USING BTREE,
+  INDEX `id_sanpham`(`id_sanpham` ASC) USING BTREE,
+  CONSTRAINT `id_hoadon` FOREIGN KEY (`id_hoadon`) REFERENCES `hoadon` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `id_sanpham` FOREIGN KEY (`id_sanpham`) REFERENCES `sanpham` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -127,18 +127,18 @@ CREATE TABLE `ct_hoadon`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `hoadon`;
 CREATE TABLE `hoadon`  (
-                           `id` int NOT NULL AUTO_INCREMENT,
-                           `ngaylap_hd` date NOT NULL,
-                           `id_ngdung` int NOT NULL,
-                           `ten` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `dia_chi_giao_hang` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `tongtien` double NOT NULL,
-                           `pt_thanhtoan` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `ghichu` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `signature`varchar(255) NOT NULL,
-                           PRIMARY KEY (`id`) USING BTREE,
-                           INDEX `id_ngdung`(`id_ngdung` ASC) USING BTREE,
-                           CONSTRAINT `id_ngdung` FOREIGN KEY (`id_ngdung`) REFERENCES `nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ngaylap_hd` date NOT NULL,
+  `id_ngdung` int NOT NULL,
+  `ten` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `dia_chi_giao_hang` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `tongtien` double NOT NULL,
+  `pt_thanhtoan` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ghichu` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `signature` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id_ngdung`(`id_ngdung` ASC) USING BTREE,
+  CONSTRAINT `id_ngdung` FOREIGN KEY (`id_ngdung`) REFERENCES `nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -150,9 +150,9 @@ CREATE TABLE `hoadon`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `loaisp`;
 CREATE TABLE `loaisp`  (
-                           `id` int NOT NULL AUTO_INCREMENT,
-                           `tenloai` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           PRIMARY KEY (`id`) USING BTREE
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tenloai` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -167,15 +167,15 @@ INSERT INTO `loaisp` VALUES (3, 'Hỗ trợ');
 -- ----------------------------
 DROP TABLE IF EXISTS `nguoidung`;
 CREATE TABLE `nguoidung`  (
-                              `id` int NOT NULL AUTO_INCREMENT,
-                              `hoten` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                              `sdt` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                              `diachi` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                              `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                              `ten_dangnhap` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                              `matkhau` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                              `admin` int NOT NULL DEFAULT 1,
-                              PRIMARY KEY (`id`) USING BTREE
+  `id` int NOT NULL AUTO_INCREMENT,
+  `hoten` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `sdt` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `diachi` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ten_dangnhap` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `matkhau` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `admin` int NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -192,15 +192,15 @@ INSERT INTO `nguoidung` VALUES (5, 'nm', '0376505735', 'bk', 'cd001@gmail.com', 
 -- ----------------------------
 DROP TABLE IF EXISTS `public_keys`;
 CREATE TABLE `public_keys`  (
-                                `id` int NOT NULL AUTO_INCREMENT,
-                                `user_id` int NOT NULL,
-                                `user_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                                `key_value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                                `created_at` timestamp NOT NULL DEFAULT current_timestamp,
-                                `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                                PRIMARY KEY (`id`) USING BTREE,
-                                INDEX `user_id`(`user_id` ASC) USING BTREE,
-                                CONSTRAINT `public_keys_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `nguoidung` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `user_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `key_value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp,
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `user_id`(`user_id` ASC) USING BTREE,
+  CONSTRAINT `public_keys_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `nguoidung` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -216,16 +216,16 @@ INSERT INTO `public_keys` VALUES (9, 4, 'demo', 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8
 -- ----------------------------
 DROP TABLE IF EXISTS `sanpham`;
 CREATE TABLE `sanpham`  (
-                            `id` int NOT NULL AUTO_INCREMENT,
-                            `tensp` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                            `mota` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                            `hinhanh` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                            `giagoc` double NOT NULL,
-                            `giakm` double NOT NULL,
-                            `id_loaisp` int NOT NULL,
-                            PRIMARY KEY (`id`) USING BTREE,
-                            INDEX `loaisp`(`id_loaisp` ASC) USING BTREE,
-                            CONSTRAINT `loaisp` FOREIGN KEY (`id_loaisp`) REFERENCES `loaisp` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tensp` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `mota` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `hinhanh` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `giagoc` double NOT NULL,
+  `giakm` double NOT NULL,
+  `id_loaisp` int NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `loaisp`(`id_loaisp` ASC) USING BTREE,
+  CONSTRAINT `loaisp` FOREIGN KEY (`id_loaisp`) REFERENCES `loaisp` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -303,16 +303,16 @@ INSERT INTO `sanpham` VALUES (66, 'Bio Sorbitol B12', 'Tăng cường chức nă
 -- ----------------------------
 DROP TABLE IF EXISTS `tintuc`;
 CREATE TABLE `tintuc`  (
-                           `id` int NOT NULL AUTO_INCREMENT,
-                           `tentintuc` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `nguoidang` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `ngaydang` date NOT NULL,
-                           `mota` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `noidung` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                           `id_nguoidung` int NOT NULL,
-                           PRIMARY KEY (`id`) USING BTREE,
-                           INDEX `idtaikhoan`(`id_nguoidung` ASC) USING BTREE,
-                           CONSTRAINT `idtaikhoan` FOREIGN KEY (`id_nguoidung`) REFERENCES `nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tentintuc` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nguoidang` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ngaydang` date NOT NULL,
+  `mota` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `noidung` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `id_nguoidung` int NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idtaikhoan`(`id_nguoidung` ASC) USING BTREE,
+  CONSTRAINT `idtaikhoan` FOREIGN KEY (`id_nguoidung`) REFERENCES `nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
