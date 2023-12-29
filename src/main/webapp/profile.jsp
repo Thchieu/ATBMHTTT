@@ -75,44 +75,25 @@
                         <tr>
                           <th>STT</th>
                           <th>Tên mặt hàng</th>
-                          <th>Số lượng</th>
+                          <%--<th>Số lượng</th>--%>
                           <th>Ngày đặt hàng</th>
-                          <th>Trạng thái</th>
+                          <%-- <th>Trạng thái</th>--%>
                           <th>Tổng tiền</th>
                           <th>Hoạt động</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td> VIAMOX LA 20%</td>
-                          <td>2</td>
-                          <td>08/11/2022</td>
-                          <td>chưa giải quyết
-                          </td>
-                          <td>250.000 VNĐ</td>
-                          <td><a href="cart.jsp" class="btn">Xem sản phẩm</a></td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>GLUCO KCE CAPTOX</td>
-                          <td>1</td>
-                          <td>04/11/2022</td>
-                          <td>Đã phê duyệt</td>
-                          <td>99.000 VNĐ</td>
-                          <td><a href="cart.jsp" class="btn">Xem Sản phẩm</a></td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>ALPHA TRYPSIN WSP</td>
-                          <td>
-                            4
-                          </td>
-                          <td>21/05/2022</td>
-                          <td>Đã Giao</td>
-                          <td>330.000 VNĐ</td>
-                          <td><a href="cart.jsp" class="btn">Xem Sản phẩm</a></td>
-                        </tr>
+                        <c:forEach var="bill" items="${sessionScope.userBills}" varStatus="ss">
+                          <tr>
+                            <td>${ss.index+1}</td>
+                            <td>${bill.ten}</td>
+                              <%-- <td>${bill.soLuong}</td>--%>
+                            <td>${bill.ngayLap_hoaDon}</td>
+                              <%-- <td>${bill.trangThai}</td>--%>
+                            <td>${bill.tongTien} VNĐ</td>
+                           <td><button type="submit"><i class="fas fa-trash-alt"></i></button></td>
+                          </tr>
+                        </c:forEach>
                         </tbody>
                       </table>
                     </div>
