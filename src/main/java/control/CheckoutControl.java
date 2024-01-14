@@ -45,6 +45,7 @@ public class CheckoutControl extends HttpServlet {
         String pt_thanhtoan = request.getParameter("pt_thanhtoan");
         String ghichu = request.getParameter("ghichu");
         String xacminh = request.getParameter("xacminh");
+        String keyData = request.getParameter("fileContent");
         DAO dao = new DAO();
         List<Product> list = CartDAO.getGiohang();
 
@@ -61,65 +62,66 @@ public class CheckoutControl extends HttpServlet {
 
             int userId = Integer.parseInt(user.getId()); // Thay đổi giá trị ID người dùng tương ứng
             String userName = user.getFullName();
-            String directory = "C:\\Users\\DELL\\Documents";
-            String privateKeyContent = request.getParameter("privateKeyContent");
+//            String directory = "C:\\Users\\DELL\\Documents";
+//            String privateKeyContent = request.getParameter("privateKeyContent");
 
-                PublicKey publicKey = getPublicKeyFromDatabase(userId);
-                 PrivateKey privateKey = getPrivateKeyFromFile(userId, userName,directory);
+            PublicKey publicKey = getPublicKeyFromDatabase(userId);
+//                 PrivateKey privateKey = getPrivateKeyFromFile(userId, userName,directory);
 //                PrivateKey privateKey = ElectronicSignatureVerification.getPrivateKeyFromContent(privateKeyContent);
-                String data = ten + " " + dia_chi_giao_hang + " " + pt_thanhtoan + " " + ghichu;
-                SHA sha = new SHA();
-                String valueHash = SHA.hash(data, sha.SHA_1);
-                String signature = signData(valueHash, privateKey);
-                String sinature1 = signature;
+            PrivateKey privateKey = getPrivateKeyFromContent(keyData);
+            String data = ten + " " + dia_chi_giao_hang + " " + pt_thanhtoan + " " + ghichu;
+            SHA sha = new SHA();
+            String valueHash = SHA.hash(data, sha.SHA_1);
+            String signature = signData(valueHash, privateKey);
+            String sinature1 = signature;
 
-                boolean isVerified = verifySignature(valueHash, signature, publicKey);
-                boolean checkKey = dao.checkKey(userId);
+            boolean isVerified = verifySignature(valueHash, signature, publicKey);
+            boolean checkKey = dao.checkKey(userId);
 
-                if (checkKey == true) {
-                    if (
-                            isVerified == true
+            if (checkKey == true) {
+                if (
+                        isVerified == true
 //                        xacminh.equals(user.getPass())
-                    ) {
+                ) {
 
-                        HashMap<Product, Integer> map = new HashMap<>();
-                        for (Product p : list) {
-                            total += p.getPrice();
-                            map.put(p, map.getOrDefault(p, 0) + 1);
-                        }
-                        if (total > 0) {
-                            total1 = 35000;
-                        } else {
-                            total1 = 0;
-                        }
-                        Bill bill = new Bill(invoiceNumber1, user, ten, new Timestamp(date.getTime()), dia_chi_giao_hang, pt_thanhtoan, ghichu, total1 + total, sinature1);
-                        int idBill = billDAO.addBill(bill);
-                        for (Map.Entry<Product, Integer> entry : map.entrySet()) {
-                            Product product = entry.getKey();
-                            int soLuong = entry.getValue();
-                            System.out.println(idBill);
-                            billDAO.addBillDetails(new BillDetails(idBill, product, soLuong, product.getPrice()));
-                        }
-                        list.clear();
-                        request.setAttribute("message", "Đặt hàng thành công");
-
-                        // Chuyển hướng đến trang hiển thị thông báo
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
-                        dispatcher.forward(request, response);
-                    } else {
-                        request.setAttribute("message", "Xác thực đơn hàng không thành công");
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
-                        dispatcher.forward(request, response);
+                    HashMap<Product, Integer> map = new HashMap<>();
+                    for (Product p : list) {
+                        total += p.getPrice();
+                        map.put(p, map.getOrDefault(p, 0) + 1);
                     }
-                } else {
+                    if (total > 0) {
+                        total1 = 35000;
+                    } else {
+                        total1 = 0;
+                    }
+                    Bill bill = new Bill(invoiceNumber1, user, ten, new Timestamp(date.getTime()), dia_chi_giao_hang, pt_thanhtoan, ghichu, total1 + total, sinature1);
+                    int idBill = billDAO.addBill(bill);
+                    for (Map.Entry<Product, Integer> entry : map.entrySet()) {
+                        Product product = entry.getKey();
+                        int soLuong = entry.getValue();
+                        System.out.println(idBill);
+                        billDAO.addBillDetails(new BillDetails(idBill, product, soLuong, product.getPrice()));
+                    }
+                    list.clear();
+                    request.setAttribute("message", "Đặt hàng thành công");
 
+                    // Chuyển hướng đến trang hiển thị thông báo
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    request.setAttribute("message", "Xác thực đơn hàng không thành công");
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
                     dispatcher.forward(request, response);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
+                dispatcher.forward(request, response);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+}
 
 
