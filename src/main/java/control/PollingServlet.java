@@ -1,6 +1,7 @@
 package control;
 
 import context.DBConnect;
+import entity.SHA;
 import entity.User;
 
 import javax.servlet.ServletException;
@@ -42,8 +43,10 @@ public class PollingServlet extends HttpServlet {
             }
             boolean allSignaturesValid = true;
             String error_id = "";
+            SHA sha = new SHA();
             for (int i = 0; i < currentData.size(); i++) {
-                boolean signatureValid = verifySignature(currentData.get(i), signatures.get(i), publicKey);
+                String data = SHA.hash(currentData.get(i), sha.SHA_1);
+                boolean signatureValid = verifySignature(data, signatures.get(i), publicKey);
 
                 if (!signatureValid) {
                     allSignaturesValid = false;
