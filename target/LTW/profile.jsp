@@ -18,29 +18,8 @@
   <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script>
-    function pollForDataChange() {
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var responseText = xhr.responseText;
-          console.log(responseText);
-          if (responseText === "false") {
-            alert("Data has changed!");
-          } else if (responseText === "error") {
-            console.error("An error occurred while checking for data change.");
-          }
+  <script src="js/poling.js"></script>
 
-          setTimeout(pollForDataChange, 10000);
-        }
-      };
-
-      xhr.open("GET", "/ATBMHTTT_war/PollingServlet", true);
-      xhr.send();
-    }
-
-    pollForDataChange();
-  </script>
   <title>Petmark ❤️</title>
 </head>
 <body class="">
