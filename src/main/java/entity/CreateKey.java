@@ -4,10 +4,7 @@ import context.DBConnect;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,6 +26,7 @@ public class CreateKey {
             String selectQuery = "SELECT id, hoten FROM nguoidung";
             PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
             ResultSet resultSet = selectStatement.executeQuery();
+            String a = readPrivateKeyFromFile(6,"han","C:\\Users\\DELL\\Downloads","private_key.pem");
 
             while (resultSet.next()) {
                 int userId = resultSet.getInt("id");
@@ -36,8 +34,11 @@ public class CreateKey {
                 if (!isUserIdExists(userId)) {
                     // Tạo và lưu khóa
                     generateAndStoreKeyPair(userId, userName);
+
                 } else {
                     System.out.println("Key pair not generated for user " + userName + " because user_id already exists.");
+                    System.out.println(a);
+
                 }
             }
 
@@ -59,7 +60,7 @@ public class CreateKey {
             storePublicKeyInDatabase(userId, userName, keyPair.getPublic());
 
             // Lưu trữ private key vào file
-            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"C:\\Users\\DELL\\ATBMHTTT\\key","private_key.pem");
+            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"C:\\Users\\DELL\\Downloads","private_key.pem");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,5 +163,14 @@ public class CreateKey {
 
         System.out.println("Private key stored in the file: " + path);
     }
+    public static String readPrivateKeyFromFile(int userId, String userName, String directory, String fileName) throws Exception {
+        // Đọc nội dung của file chứa private key
+        Path path = Paths.get(directory, userId + "_" + userName + "_" + fileName);
+        byte[] encoded = Files.readAllBytes(path);
 
+        // Giải mã base64 để lấy private key
+        byte[] decoded = Base64.getDecoder().decode(encoded);
+
+        return new String(decoded);
+    }
 }
