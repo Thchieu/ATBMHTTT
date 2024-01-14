@@ -952,7 +952,7 @@ public class DAO {
                 "    hd.ten, " +
                 "    hd.dia_chi_giao_hang, " +
                 "    hd.ngaylap_hd, " +
-                "    GROUP_CONCAT(CONCAT(sp.tensp, ' (', cthd.soluong, ')') SEPARATOR ', ') AS product_info, " +
+                "    GROUP_CONCAT(CONCAT(sp.tensp, ' (', cthd.soluong, ')') SEPARATOR ' ; ') AS product_info, " +
                 "    hd.tongtien AS tongtien, " +
                 "    hd.ghichu " +
                 "FROM sanpham sp " +
@@ -966,17 +966,15 @@ public class DAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                // Sử dụng StringBuilder để xây dựng thông tin đơn hàng
-                StringBuilder orderInfo = new StringBuilder();
-                orderInfo.append("Mã hóa đơn: ").append(rs.getInt("hoadon_id")).append("\n");
-                orderInfo.append("Tên: ").append(rs.getString("ten")).append("\n");
-                orderInfo.append("Địa chỉ giao hàng: ").append(rs.getString("dia_chi_giao_hang")).append("\n");
-                orderInfo.append("Ngày lặp hóa đơn: ").append(rs.getTimestamp("ngaylap_hd")).append("\n");
-                orderInfo.append("Sản phẩm: ").append(rs.getString("product_info")).append("\n");
-                orderInfo.append("Tổng tiền: ").append(rs.getDouble("tongtien")).append("\n");
-                orderInfo.append("Ghi chú: ").append(rs.getString("ghichu")).append("\n");
+                String orderDetails = rs.getInt("hoadon_id") + "," +
+                        rs.getString("ten") + "," +
+                        rs.getString("dia_chi_giao_hang") + "," +
+                        rs.getTimestamp("ngaylap_hd") + "," +
+                        rs.getString("product_info") + "," +
+                        rs.getDouble("tongtien") + "," +
+                        rs.getString("ghichu");
 
-                orderList.add(orderInfo.toString());
+                orderList.add(orderDetails);
             }
 
         } catch (Exception e) {
