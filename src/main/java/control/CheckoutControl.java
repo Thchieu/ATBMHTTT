@@ -61,7 +61,7 @@ public class CheckoutControl extends HttpServlet {
 
             int userId = Integer.parseInt(user.getId()); // Thay đổi giá trị ID người dùng tương ứng
             String userName = user.getFullName();
-            String directory = "C:\\Users\\DELL\\Downloads";
+            String directory = "C:\\Users\\DELL\\Documents";
             String privateKeyContent = request.getParameter("privateKeyContent");
 
                 PublicKey publicKey = getPublicKeyFromDatabase(userId);

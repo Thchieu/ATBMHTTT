@@ -60,7 +60,7 @@ public class CreateKey {
             storePublicKeyInDatabase(userId, userName, keyPair.getPublic());
 
             // Lưu trữ private key vào file
-            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"C:\\Users\\DELL\\Downloads","private_key.pem");
+            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"C:\\Users\\DELL\\Documents","private_key.pem");
         } catch (Exception e) {
             e.printStackTrace();
         }
