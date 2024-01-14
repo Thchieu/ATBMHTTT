@@ -800,7 +800,8 @@ public class DAO {
             e.printStackTrace();
         }
     }
-    public boolean checkKey(int uId){
+
+    public boolean checkKey(int uId) {
         try {
             conn = new DBConnect().getConnection();
             String sql = "Select * from public_keys where user_id = ? and status = 'Xac thuc'";
@@ -808,11 +809,12 @@ public class DAO {
             ps.setInt(1, uId);
             rs = ps.executeQuery();
             return rs.next();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
-    public void removeAuthKey(int uId){
+
+    public void removeAuthKey(int uId) {
         try {
             conn = new DBConnect().getConnection();
             String sql = "update public_keys set status = 'Huy' where user_id = ? and status = 'Xac thuc'";
@@ -820,12 +822,12 @@ public class DAO {
             ps.setInt(1, uId);
             ps.executeUpdate();
             conn.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void checkExpiredKey(int uId){
+    public void checkExpiredKey(int uId) {
         try {
             conn = new DBConnect().getConnection();
             String sql = "UPDATE public_keys\n" +
@@ -835,15 +837,161 @@ public class DAO {
             ps.setInt(1, uId);
             ps.executeUpdate();
             conn.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
+    private static List<String> getDataFromDB(String id_ngdung) {
+        List<String> list = new ArrayList<>();
+        String res = "";
+        try (Connection connection = DBConnect.getConnection()) {
+            String sql = "SELECT * FROM hoadon WHERE id_ngdung = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, id_ngdung);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        res = resultSet.getString("ten") + " " + resultSet.getString("dia_chi_giao_hang") + " " + resultSet.getString("pt_thanhtoan") + " " + resultSet.getString("ghichu");
+                        list.add(res);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    private List<String> getSignatureFromDatabase(String id_ngdung) {
+        List<String> list = new ArrayList<>();
+        String res = "";
+        try (Connection connection = DBConnect.getConnection()) {
+            String sql = "SELECT signature FROM hoadon WHERE id_ngdung = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, id_ngdung);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        res = resultSet.getString("signature");
+                        list.add(res);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    private List<String> getIdHoadon(String id_ngdung) {
+        List<String> list = new ArrayList<>();
+        String res = "";
+        try (Connection connection = DBConnect.getConnection()) {
+            String sql = "SELECT id FROM hoadon WHERE id_ngdung= ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, id_ngdung);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        res = resultSet.getString("id");
+                        list.add(res);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public List<Bill> getAllOrder() {
+        List<Bill> billList = new ArrayList<>();
+
+        String query = "SELECT " +
+                "    hd.id AS hoadon_id, " +
+                "    hd.ten, " +
+                "    hd.dia_chi_giao_hang, " +
+                "    hd.ngaylap_hd, " +
+                "    GROUP_CONCAT(CONCAT(sp.tensp, ' (', cthd.soluong, ')') SEPARATOR ', ') AS product_info, " +
+                "    hd.tongtien AS tongtien, " +
+                "    hd.ghichu " +
+                "FROM sanpham sp " +
+                "JOIN ct_hoadon cthd ON sp.id = cthd.id_sanpham " +
+                "JOIN hoadon hd ON hd.id = cthd.id_hoadon " +
+                "GROUP BY " +
+                "    hd.id, hd.ngaylap_hd";
+
+        try (Connection conn = new DBConnect().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Bill bill = new Bill();
+                bill.setId(rs.getInt("hoadon_id"));
+                bill.setTen(rs.getString("ten"));
+                bill.setDiachi(rs.getString("dia_chi_giao_hang"));
+                bill.setNgayLap_hoaDon(rs.getTimestamp("ngaylap_hd"));
+                bill.setTen(rs.getString("product_info"));
+                bill.setTongTien(rs.getDouble("tongtien"));
+                bill.setGhiChu(rs.getString("ghichu"));
+
+                billList.add(bill);
+            }
+
+        } catch (Exception e) {
+            // Xử lý ngoại lệ nếu cần
+            e.printStackTrace();
+        }
+        return billList;
+    }
+
+    public List<String> getAllBill() {
+        List<String> orderList = new ArrayList<>();
+
+        String query = "SELECT " +
+                "    hd.id AS hoadon_id, " +
+                "    hd.ten, " +
+                "    hd.dia_chi_giao_hang, " +
+                "    hd.ngaylap_hd, " +
+                "    GROUP_CONCAT(CONCAT(sp.tensp, ' (', cthd.soluong, ')') SEPARATOR ', ') AS product_info, " +
+                "    hd.tongtien AS tongtien, " +
+                "    hd.ghichu " +
+                "FROM sanpham sp " +
+                "JOIN ct_hoadon cthd ON sp.id = cthd.id_sanpham " +
+                "JOIN hoadon hd ON hd.id = cthd.id_hoadon " +
+                "GROUP BY " +
+                "    hd.id, hd.ngaylap_hd";
+
+        try (Connection conn = new DBConnect().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                // Sử dụng StringBuilder để xây dựng thông tin đơn hàng
+                StringBuilder orderInfo = new StringBuilder();
+                orderInfo.append("Mã hóa đơn: ").append(rs.getInt("hoadon_id")).append("\n");
+                orderInfo.append("Tên: ").append(rs.getString("ten")).append("\n");
+                orderInfo.append("Địa chỉ giao hàng: ").append(rs.getString("dia_chi_giao_hang")).append("\n");
+                orderInfo.append("Ngày lặp hóa đơn: ").append(rs.getTimestamp("ngaylap_hd")).append("\n");
+                orderInfo.append("Sản phẩm: ").append(rs.getString("product_info")).append("\n");
+                orderInfo.append("Tổng tiền: ").append(rs.getDouble("tongtien")).append("\n");
+                orderInfo.append("Ghi chú: ").append(rs.getString("ghichu")).append("\n");
+
+                orderList.add(orderInfo.toString());
+            }
+
+        } catch (Exception e) {
+            // Xử lý ngoại lệ nếu cần
+            e.printStackTrace();
+        }
+        return orderList;
+    }
+
+
     public static void main(String[] args) {
         DAO dao = new DAO();
-        System.out.println(dao.checkKey(5));
-        dao.removeAuthKey(5);
+        List<String> list = dao.getAllBill();
+        for (String s : list) {
+            System.out.println(s);
+        }
     }
     public List<Bill> getAllBill() {
         List<Bill> list = new ArrayList<>();
