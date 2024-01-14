@@ -2,20 +2,19 @@ package dao;
 
 import context.DBConnect;
 import entity.*;
-import entity.CreateKey;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.security.KeyPair;
+
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import java.util.Date;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import static entity.CreateKey.*;
-import static entity.RSA.generateKeyPair;
+
+
 
 
 public class DAO {
@@ -994,5 +993,60 @@ public class DAO {
             System.out.println(s);
         }
     }
-}
+    public List<Bill> getAllBill() {
+        List<Bill> list = new ArrayList<>();
+        String query = "SELECT * FROM hoadon";
+        try {
+            conn = new DBConnect().getConnection();
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                Date ngayLapHoaDon = rs.getDate("ngaylap_hd");
+                int idNguoiDung = rs.getInt("id_ngdung");
+                String ten = rs.getString("ten");
+                String diaChiGiaoHang = rs.getString("dia_chi_giao_hang");
+                double tongTien = rs.getDouble("tongtien");
+                String ptThanhToan = rs.getString("pt_thanhtoan");
+                String ghiChu = rs.getString("ghichu");
+                String signature = rs.getString("signature");
+
+                // Lấy thông tin người dùng từ bảng nguoidung
+                User nguoiDung = getUserById(idNguoiDung);
+
+                // Tạo đối tượng Bill và thêm vào danh sách
+                list.add(new Bill(id, nguoiDung, ten, (Timestamp) ngayLapHoaDon, diaChiGiaoHang, ptThanhToan, ghiChu, tongTien, signature));
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private User getUserById(int idNguoiDung) {
+
+            String query = "select * from nguoidung where id =?";
+            try {
+                conn = new DBConnect().getConnection();
+                ps.setInt(1, idNguoiDung);
+                ps = conn.prepareStatement(query);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    new User(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getString(5),
+                            rs.getString(6),
+                            rs.getString(7),
+                            rs.getInt(8)
+                    );
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+    }
 

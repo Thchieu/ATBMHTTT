@@ -139,4 +139,13 @@ public class ElectronicSignatureVerification{
         byte[] signatureBytes = Base64.getDecoder().decode(signature);
         return sig.verify(signatureBytes);
     }
+    public static PrivateKey getPrivateKeyFromContent(String privateKeyContent) throws Exception {
+        // Convert private key content from Base64 to byte array
+        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyContent);
+
+        // Convert byte array to PrivateKey
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+        return keyFactory.generatePrivate(keySpec);
+    }
 }

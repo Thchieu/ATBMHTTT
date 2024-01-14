@@ -18,29 +18,6 @@
   <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script>
-    function pollForDataChange() {
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var responseText = xhr.responseText;
-          console.log(responseText);
-          if (responseText === "false") {
-            alert("Data has changed!");
-          } else if (responseText === "error") {
-            console.error("An error occurred while checking for data change.");
-          }
-
-          setTimeout(pollForDataChange, 10000);
-        }
-      };
-
-      xhr.open("GET", "/ATBMHTTT_war/PollingServlet", true);
-      xhr.send();
-    }
-
-    pollForDataChange();
-  </script>
   <title>Petmark ❤️</title>
 </head>
 <body class="">
@@ -96,37 +73,46 @@
                       <table class="table table-bordered">
                         <thead class="thead-light">
                         <tr>
-                          <%--<th>STT</th>--%>
-                          <th>Id hóa đơn</th>
-                          <%--<th>Tên người dùng</th>--%>
+                          <th>STT</th>
                           <th>Tên mặt hàng</th>
-                          <%--<th>Số lượng</th>--%>
+                          <th>Số lượng</th>
                           <th>Ngày đặt hàng</th>
-                           <th>Địa chỉ</th>
+                          <th>Trạng thái</th>
                           <th>Tổng tiền</th>
-                          <th>Ghi chú</th>
                           <th>Hoạt động</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="bill" items="${sessionScope.userBills}" varStatus="ss">
-                          <tr>
-                            <%--<td>${ss.index+1}</td>--%>
-                            <td>${bill.id}</td>
-                            <td>${bill.ten}</td>
-                               <%--<td>${bill.nguoidung}</td>--%>
-                            <td>${bill.ngayLap_hoaDon}</td>
-                               <td>${bill.diachi}</td>
-                            <td>${bill.tongTien} VNĐ</td>
-                            <td>${bill.ghiChu}</td>
-                            <c:set var="sessionValue" value="${sessionScope.error_id}" />
-                            <c:set var="compareValue" value="${bill.id}" />
-                            <c:if test="${sessionValue == compareValue}">
-                              <td><a href="deleteBill?oID=${bill.id}" class="btn btn-primary btn-sm trash" title="Xóa"><i class="fas fa-trash-alt"></i>
-                            </c:if>
-
-                          </tr>
-                        </c:forEach>
+                        <tr>
+                          <td>1</td>
+                          <td> VIAMOX LA 20%</td>
+                          <td>2</td>
+                          <td>08/11/2022</td>
+                          <td>chưa giải quyết
+                          </td>
+                          <td>250.000 VNĐ</td>
+                          <td><a href="cart.jsp" class="btn">Xem sản phẩm</a></td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>GLUCO KCE CAPTOX</td>
+                          <td>1</td>
+                          <td>04/11/2022</td>
+                          <td>Đã phê duyệt</td>
+                          <td>99.000 VNĐ</td>
+                          <td><a href="cart.jsp" class="btn">Xem Sản phẩm</a></td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>ALPHA TRYPSIN WSP</td>
+                          <td>
+                            4
+                          </td>
+                          <td>21/05/2022</td>
+                          <td>Đã Giao</td>
+                          <td>330.000 VNĐ</td>
+                          <td><a href="cart.jsp" class="btn">Xem Sản phẩm</a></td>
+                        </tr>
                         </tbody>
                       </table>
                     </div>
@@ -222,7 +208,7 @@
                       <div class="row justify-content-center mt-3">
                         <div class="col-12 col-md-6 text-center">
                           <p class="text-danger">Đưa key về trạng thái không chấp nhận mới</p>
-                          <button id="revokeKeyBtn" class="btn btn-danger" type="submit">Yêu cầu</button>
+                          <button class="btn btn-danger" type="submit">Yêu cầu</button>
                         </div>
                       </div>
                     </form>
@@ -234,7 +220,7 @@
                       <div class="row justify-content-center mt-3">
                         <div class="col-12 col-md-6 text-center">
                           <p class="text-danger">Tạo key mới khi đã đưa key về trạng thái không chấp nhận</p>
-                          <button id="genKeyBtn" class="btn btn-success" type="submit">Tạo key mới</button>
+                          <button class="btn btn-success" type="submit">Tạo key mới</button>
                         </div>
                       </div>
                     </form>
@@ -288,30 +274,6 @@
     });
   });
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var keyExists = ${sessionScope.keyExists};
-    var revokeKeyBtn = document.getElementById('revokeKeyBtn');
-
-    // Kiểm tra điều kiện và tắt/bật button
-    if (!keyExists) {
-      revokeKeyBtn.disabled = true;
-    } else {
-      revokeKeyBtn.disabled = false;
-    }
-  });
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var keyExists = ${sessionScope.keyExists};
-    var genKeyBtn = document.getElementById('genKeyBtn');
-
-    // Kiểm tra điều kiện và tắt/bật button
-    if (!keyExists) {
-      genKeyBtn.disabled = false;
-    } else {
-      genKeyBtn.disabled = true;
-    }
-  });
-
   $(document).ready(function() {
     // Bắt sự kiện khi nhấn vào nút "Yêu cầu đưa key về trạng thái không chấp nhận mới"
     $('#revokeKeyForm').submit(function(event) {
@@ -337,10 +299,10 @@
       event.preventDefault();
       console.log("generateNewKey");
       // Gửi yêu cầu đến servlet
-      $.post('KeyManagementServlet', { action: 'generateNewKey' }, function(response) {
-        // Xử lý kết quả nếu cần
-        alert(response);
-      });
+      // $.post('KeyManagementServlet', { action: 'generateNewKey' }, function(response) {
+      //   // Xử lý kết quả nếu cần
+      //
+      // });
     });
   });
 </script>
