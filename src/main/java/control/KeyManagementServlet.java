@@ -17,7 +17,7 @@ public class KeyManagementServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
+          response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         Object o = session.getAttribute("user");
@@ -26,14 +26,23 @@ public class KeyManagementServlet extends HttpServlet {
         DAO dao = new DAO();
         boolean keyExists = dao.checkKey(uId);
         session.setAttribute("keyExists", keyExists);
-        if(user != null){
+        if (user != null) {
             if ("revokeKey".equals(action)) {
-                if (keyExists){
+                if (keyExists) {
                     dao.removeAuthKey(uId);
-                    response.getWriter().write("Yêu cầu của bạn đã được xử lý");
+                    response.getWriter().write("Yêu cầu hủy key của bạn đã được xử lý");
                 } else {
-                    response.getWriter().write("Yêu cầu của bạn không thành công");
+                    response.getWriter().write("Yêu cầu hủy key của bạn không thành công");
                 }
+
+            } else if ("generateNewKey".equals(action)) {
+                if(!keyExists){
+                    dao.create_key();
+                    response.getWriter().write("Yêu cầu tạo key mới của bạn đã được xử lý");
+                } else {
+                    response.getWriter().write("Yêu cầu tạo key mới của bạn không thành công");
+                }
+
 
             } else {
                 // Xử lý các trường hợp khác nếu cần

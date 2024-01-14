@@ -208,7 +208,7 @@
                       <div class="row justify-content-center mt-3">
                         <div class="col-12 col-md-6 text-center">
                           <p class="text-danger">Đưa key về trạng thái không chấp nhận mới</p>
-                          <button class="btn btn-danger" type="submit">Yêu cầu</button>
+                          <button id="revokeKeyBtn" class="btn btn-danger" type="submit">Yêu cầu</button>
                         </div>
                       </div>
                     </form>
@@ -220,7 +220,7 @@
                       <div class="row justify-content-center mt-3">
                         <div class="col-12 col-md-6 text-center">
                           <p class="text-danger">Tạo key mới khi đã đưa key về trạng thái không chấp nhận</p>
-                          <button class="btn btn-success" type="submit">Tạo key mới</button>
+                          <button id="genKeyBtn" class="btn btn-success" type="submit">Tạo key mới</button>
                         </div>
                       </div>
                     </form>
@@ -274,6 +274,30 @@
     });
   });
 
+  document.addEventListener('DOMContentLoaded', function() {
+    var keyExists = ${sessionScope.keyExists};
+    var revokeKeyBtn = document.getElementById('revokeKeyBtn');
+
+    // Kiểm tra điều kiện và tắt/bật button
+    if (!keyExists) {
+      revokeKeyBtn.disabled = true;
+    } else {
+      revokeKeyBtn.disabled = false;
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var keyExists = ${sessionScope.keyExists};
+    var genKeyBtn = document.getElementById('genKeyBtn');
+
+    // Kiểm tra điều kiện và tắt/bật button
+    if (!keyExists) {
+      genKeyBtn.disabled = false;
+    } else {
+      genKeyBtn.disabled = true;
+    }
+  });
+
   $(document).ready(function() {
     // Bắt sự kiện khi nhấn vào nút "Yêu cầu đưa key về trạng thái không chấp nhận mới"
     $('#revokeKeyForm').submit(function(event) {
@@ -299,10 +323,10 @@
       event.preventDefault();
       console.log("generateNewKey");
       // Gửi yêu cầu đến servlet
-      // $.post('KeyManagementServlet', { action: 'generateNewKey' }, function(response) {
-      //   // Xử lý kết quả nếu cần
-      //
-      // });
+      $.post('KeyManagementServlet', { action: 'generateNewKey' }, function(response) {
+        // Xử lý kết quả nếu cần
+        alert(response);
+      });
     });
   });
 </script>
