@@ -26,6 +26,10 @@ public class Bill {
         this.signature = signature;
     }
 
+    public Bill() {
+
+    }
+
     public int getId() {
         return id;
     }
@@ -96,6 +100,21 @@ public class Bill {
 
     public void setTen(String ten) {
         this.ten = ten;
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", nguoiDung=" + nguoiDung +
+                ", ten='" + ten + '\'' +
+                ", ngayLap_hoaDon=" + ngayLap_hoaDon +
+                ", diachi='" + diachi + '\'' +
+                ", pt_thanhToan='" + pt_thanhToan + '\'' +
+                ", ghiChu='" + ghiChu + '\'' +
+                ", tongTien=" + tongTien +
+                ", signature='" + signature + '\'' +
+                '}';
     }
 }
 
