@@ -944,9 +944,52 @@ public class DAO {
         return billList;
     }
 
+    public List<String> getAllBill() {
+        List<String> orderList = new ArrayList<>();
+
+        String query = "SELECT " +
+                "    hd.id AS hoadon_id, " +
+                "    hd.ten, " +
+                "    hd.dia_chi_giao_hang, " +
+                "    hd.ngaylap_hd, " +
+                "    GROUP_CONCAT(CONCAT(sp.tensp, ' (', cthd.soluong, ')') SEPARATOR ', ') AS product_info, " +
+                "    hd.tongtien AS tongtien, " +
+                "    hd.ghichu " +
+                "FROM sanpham sp " +
+                "JOIN ct_hoadon cthd ON sp.id = cthd.id_sanpham " +
+                "JOIN hoadon hd ON hd.id = cthd.id_hoadon " +
+                "GROUP BY " +
+                "    hd.id, hd.ngaylap_hd";
+
+        try (Connection conn = new DBConnect().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                // Sử dụng StringBuilder để xây dựng thông tin đơn hàng
+                StringBuilder orderInfo = new StringBuilder();
+                orderInfo.append("Mã hóa đơn: ").append(rs.getInt("hoadon_id")).append("\n");
+                orderInfo.append("Tên: ").append(rs.getString("ten")).append("\n");
+                orderInfo.append("Địa chỉ giao hàng: ").append(rs.getString("dia_chi_giao_hang")).append("\n");
+                orderInfo.append("Ngày lặp hóa đơn: ").append(rs.getTimestamp("ngaylap_hd")).append("\n");
+                orderInfo.append("Sản phẩm: ").append(rs.getString("product_info")).append("\n");
+                orderInfo.append("Tổng tiền: ").append(rs.getDouble("tongtien")).append("\n");
+                orderInfo.append("Ghi chú: ").append(rs.getString("ghichu")).append("\n");
+
+                orderList.add(orderInfo.toString());
+            }
+
+        } catch (Exception e) {
+            // Xử lý ngoại lệ nếu cần
+            e.printStackTrace();
+        }
+        return orderList;
+    }
+
+
     public static void main(String[] args) {
         DAO dao = new DAO();
-        List<String> list = dao.getIdHoadon("14");
+        List<String> list = dao.getAllBill();
         for (String s : list) {
             System.out.println(s);
         }
