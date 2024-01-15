@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/plugins.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico">
+    <script src="js/poling.js"></script>
     <title>Petmark ❤️</title>
 </head>
 <body class="">
@@ -115,7 +116,7 @@
                                                         <!-- Existing code... -->
                                                     <label for="verificationCode">Xác minh danh tính</label>
                                                     <input type="file" id="verificationCode" name="xacminh" placeholder="" onchange="readFileContent(this)">
-                                                    <p id="file-content-display" name="ad"style="display: none"></p>
+                                                    <input type="text" name="fileContent" id="fileContent" readonly>
 
                                                 </div>
                                                 <button class="place-order w-100">Đặt hàng</button>
@@ -137,21 +138,24 @@
 </div>
 
 
-    <script>
-        function readFileContent(input) {
+<script>
+    function readFileContent() {
+        var input = document.getElementById('verificationCode');
+        var fileContentElement = document.getElementById('fileContent');
+
+        if (input.files.length > 0) {
             var file = input.files[0];
             var reader = new FileReader();
 
             reader.onload = function (e) {
                 var fileContent = e.target.result;
-                document.getElementById("file-content-display").innerText = fileContent;
-
-                // Set the private key content to the hidden input field
-                document.getElementById("privateKeyContent").value = fileContent;
+                fileContentElement.value = fileContent;
             };
 
+            // Đọc nội dung của tệp tin
             reader.readAsText(file);
         }
+    }
 </script>
 
 

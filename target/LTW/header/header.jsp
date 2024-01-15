@@ -100,6 +100,7 @@ for (Product p : list){
                                 <li class="mainmenu__item ">
                                     <a href="blog" class="mainmenu__link">Tin tức</a>
                                 </li>
+
                                 <c:if test="${sessionScope.user.admin == 2}">
                                     <li class="mainmenu__item ">
                                         <a href="admin-home" class="mainmenu__link" target="_blank">Trang Admin</a>
