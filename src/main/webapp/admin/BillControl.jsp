@@ -58,14 +58,14 @@
                 class="app-menu__label">Bảng điều khiển</span></a></li>
         <li><a class="app-menu__item" href="user-control"><i class='app-menu__icon bx bx-user-voice'></i><span
                 class="app-menu__label">Quản lý người dùng</span></a></li>
-        <li><a class="app-menu__item active" href="product-control"><i
+        <li><a class="app-menu__item " href="product-control"><i
                 class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
         </li>
       <li><a class="app-menu__item" href="category-control"><i
                 class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý Danh mục</span></a>
         </li>
-        <li><a class="app-menu__item" href="bill-control"><i
-                class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý Hóa đơn</span></a>
+        <li><a class="app-menu__item active" href="bill-control"><i
+                class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý Đơn hàng</span></a>
         </li>
     </ul>
 </aside>
@@ -81,37 +81,40 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="row element-button">
-                        <div class="col-sm-2">
+                      <%--  <div class="col-sm-2">
                             <a class="btn btn-add btn-sm" href="#" title="Thêm" id="show-emp" data-toggle="modal"
                                data-target="#ModalUP"><i class="fas fa-plus"></i>
                                 Tạo mới sản phẩm</a>
-                        </div>
+                        </div>--%>
                     </div>
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                         <tr>
-                            <th width="10"><input type="checkbox" id="all"></th>
-                            <th>Mã sản phẩm</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Tình trạng</th>
-                            <th>Giá tiền</th>
-                            <th> ID Danh mục</th>
-                            <th>Chức năng</th>
+
+                            <th>Mã hóa đơn</th>
+                            <th>Tên</th>
+                            <th>Địa chỉ giao hàng</th>
+                            <th>Ngày lặp hóa đơn</th>
+                            <th>Sản phẩm</th>
+                            <th>Tổng tiền</th>
+                            <th>Ghi chú</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${listP}" var="p">
+                        <c:forEach var="donHangString" items="${listDonHang}">
+                            <%-- Phân tích chuỗi để lấy thông tin cụ thể --%>
+                            <c:set var="donHangInfo" value="${donHangString.split(',')}" />
+
                             <tr>
-                                <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                                <td>${p.id}</td>
-                                <td>${p.name}</td>
-                                <td><span class="badge bg-success">Còn hàng</span></td>
-                                <td>${p.price} VND</td>
-                                <td>${p.cateID}</td>
-                                <td><a href="delete?pID=${p.id}" class="btn btn-primary btn-sm trash" title="Xóa"><i class="fas fa-trash-alt"></i>
-                                </a>
-                                    <a href="loadProduct?pID=${p.id}" class="btn btn-primary btn-sm edit" title="Sửa"><i class="fas fa-edit"></i></a>
-                                </td>
+                                <td>${donHangInfo[0]}</td>
+                                <td>${donHangInfo[1]}</td>
+                                <td>${donHangInfo[2]}</td>
+                                <td>${donHangInfo[3]}</td>
+                                <td>${donHangInfo[4]}</td>
+                                <td>${donHangInfo[5]}</td>
+                                <td>${donHangInfo[6]}</td>
+
+
                             </tr>
                         </c:forEach>
                         </tbody>
