@@ -1,4 +1,5 @@
 package entity;
+
 import context.DBConnect;
 
 import java.nio.file.Files;
@@ -26,7 +27,7 @@ public class CreateKey {
             String selectQuery = "SELECT id, hoten FROM nguoidung";
             PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
             ResultSet resultSet = selectStatement.executeQuery();
-            String a = readPrivateKeyFromFile(6,"han","C:\\Users\\DELL\\Downloads","private_key.pem");
+            String a = readPrivateKeyFromFile(6, "han", "C:\\Users\\DELL\\Downloads", "private_key.pem");
 
             while (resultSet.next()) {
                 int userId = resultSet.getInt("id");
@@ -55,12 +56,13 @@ public class CreateKey {
         try {
             // Tạo cặp khóa cho người dùng
             KeyPair keyPair = generateKeyPair();
-
+            GetPath path = new GetPath();
+            String folder = path.path();
             // Lưu trữ public key vào cơ sở dữ liệu
             storePublicKeyInDatabase(userId, userName, keyPair.getPublic());
 
             // Lưu trữ private key vào file
-            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(),"C:\\Users\\DELL\\Documents","private_key.pem");
+            storePrivateKeyInFile(userId, userName, keyPair.getPrivate(), folder, "private_key.pem");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,6 +106,7 @@ public class CreateKey {
             }
         }
     }
+
     private static KeyPair generateKeyPair() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
@@ -163,6 +166,7 @@ public class CreateKey {
 
         System.out.println("Private key stored in the file: " + path);
     }
+
     public static String readPrivateKeyFromFile(int userId, String userName, String directory, String fileName) throws Exception {
         // Đọc nội dung của file chứa private key
         Path path = Paths.get(directory, userId + "_" + userName + "_" + fileName);
