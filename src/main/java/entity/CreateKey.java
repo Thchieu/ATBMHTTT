@@ -76,7 +76,7 @@ public class CreateKey {
         try {
             connection = new DBConnect().getConnection();
 
-            String checkUserIdQuery = "SELECT COUNT(*) FROM public_keys WHERE user_id = ?";
+            String checkUserIdQuery = "SELECT COUNT(*) FROM public_keys WHERE user_id = ? and status = 'Xac thuc'";
             preparedStatement = connection.prepareStatement(checkUserIdQuery);
             preparedStatement.setInt(1, userId);
 

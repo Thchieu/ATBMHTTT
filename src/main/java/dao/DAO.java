@@ -7,9 +7,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
-import java.util.Date;
 import java.util.Properties;
 
 import static entity.CreateKey.*;
@@ -983,13 +983,29 @@ public class DAO {
         return orderList;
     }
 
+    public Date getKeyCreationDate(String id) {
+        try {
+            conn = new DBConnect().getConnection();
+            String sql = "SELECT created_at FROM public_keys WHERE user_id = ? AND status = 'Xac thuc'";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDate("created_at");
+            }
+            return null;  // Hoặc ném một exception tùy thuộc vào yêu cầu của bạn
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            // Đóng kết nối sau khi sử dụng
+
+        }
+    }
+
 
     public static void main(String[] args) {
         DAO dao = new DAO();
-        List<String> list = dao.getAllBill();
-        for (String s : list) {
-            System.out.println(s);
-        }
+        System.out.println(dao.getKeyCreationDate("6"));
     }
 
 

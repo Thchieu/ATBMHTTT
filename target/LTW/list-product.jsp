@@ -308,7 +308,7 @@
                     setTimeout(pollForDataChange, 10000);
                 }
             };
-            xhr.open("GET", "/PollingServlet", true);
+            xhr.open("GET", "/ATBMHTTT_war/PollingServlet", true);
             xhr.send();
         } else {
             // User is not logged in, you may want to handle this case accordingly

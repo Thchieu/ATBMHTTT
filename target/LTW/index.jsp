@@ -411,18 +411,27 @@
 
 <script>
     var isLoggedIn = <%= session.getAttribute("user") != null %>;
+
     function pollForDataChange() {
         if (isLoggedIn) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var responseText = xhr.responseText;
-                    console.log(responseText);
-                    if (responseText === "false") {
-                        alert("Dữ liệu hóa đơn của bạn đã bị thay đổi");
-                    } else if (responseText === "error") {
-                        console.error("An error occurred while checking for data change.");
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var responseText = xhr.responseText;
+                        console.log(responseText);
+                        if (responseText === "false") {
+                            alert("Dữ liệu hóa đơn của bạn đã bị thay đổi");
+                        } else if (responseText === "no_data") {
+                            /// tùy chinh code
+                        }
+                    } else if (xhr.status === 403) {
+                        // Key bị hủy, dừng việc polling
+                        console.log("Key của người dùng đã bị hủy. Dừng polling.");
+                        return;
                     }
+
+                    // Chờ 10 giây và tiếp tục polling
                     setTimeout(pollForDataChange, 10000);
                 }
             };
@@ -436,6 +445,7 @@
 
     // Run the function when the page is loaded
     pollForDataChange();
+
 
 </script>
 

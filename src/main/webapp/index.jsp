@@ -13,14 +13,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/plugins.css" />
+    <link rel="stylesheet" href="css/plugins.css"/>
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico">
     <title>Petmark ❤️</title>
 </head>
 <body class="petmark-theme-2">
 <div class="site-wrapper">
-   <jsp:include page="header/header.jsp"></jsp:include>
+    <jsp:include page="header/header.jsp"></jsp:include>
     <section class="hero-area-two">
         <div class="container">
             <div class="row">
@@ -36,7 +36,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-10">
-                                        <h2> <span class="text-primary">Petmark</span> cửa hàng <br> thuốc thú y</h2>
+                                        <h2><span class="text-primary">Petmark</span> cửa hàng <br> thuốc thú y</h2>
                                         <h4 class="mt--30">Lựa chọn tốt nhất cho thú cưng của bạn</h4>
                                         <div class="slider-btn mt--30">
                                             <a href="list-product" class="btn btn-outlined--white btn-rounded">
@@ -53,7 +53,7 @@
                                 <div class="row">
                                     <div class="col-lg-10">
                                         <h4>Cửa hàng thú y</h4>
-                                        <h2 class="mt--20">Đến với  <br> chúng tôi</h2>
+                                        <h2 class="mt--20">Đến với <br> chúng tôi</h2>
                                         <div class="slider-btn mt--30">
                                             <a href="list-product" class="btn btn-outlined--white btn-rounded">Mua ngay
                                             </a>
@@ -171,13 +171,14 @@
                                                 <span class="onsale-badge">Sale!</span>
                                             </div>
                                             <div class="content">
-                                                <h3> <a href="detail?pID=${p.id}"> ${t.name} </a></h3>
+                                                <h3><a href="detail?pID=${p.id}"> ${t.name} </a></h3>
                                                 <div class="price text-orange">
 
                                                     <span>${t.price} VND</span>
                                                 </div>
                                                 <div class="btn-block">
-                                                    <a href="cart-home?&id=${t.id}" class="btn btn-outlined btn-rounded btn-mid">Thêm vào giỏ</a>
+                                                    <a href="cart-home?&id=${t.id}"
+                                                       class="btn btn-outlined btn-rounded btn-mid">Thêm vào giỏ</a>
 
                                                 </div>
                                             </div>
@@ -210,7 +211,7 @@
                                         <img src="${t.image}" alt="">
                                     </a>
                                     <div class="content">
-                                        <h3> <a href="detail?pID=${t.id}"> ${t.name} </a></h3>
+                                        <h3><a href="detail?pID=${t.id}"> ${t.name} </a></h3>
                                         <div class="price text-orange">
 
                                             <span>500 VND</span>
@@ -290,7 +291,8 @@
                                 <span>${t.price} VND</span>
                             </div>
                             <div class="btn-block">
-                                <a href="cart-home?&id=${t.id}" class="btn btn-outlined btn-rounded btn-mid">Thêm vào giỏ</a>
+                                <a href="cart-home?&id=${t.id}" class="btn btn-outlined btn-rounded btn-mid">Thêm vào
+                                    giỏ</a>
                             </div>
                         </div>
                     </div>
@@ -333,12 +335,13 @@
                             <span class="onsale-badge">Sale!</span>
                         </div>
                         <div class="content">
-                            <h3> <a href="product-details.html">${p.name}</a></h3>
+                            <h3><a href="product-details.html">${p.name}</a></h3>
                             <div class="price text-orange">
                                 <span>${p.price} VND</span>
                             </div>
                             <div class="btn-block">
-                                <a href="cart-home?&id=${p.id}" class="btn btn-outlined btn-rounded btn-mid">Thêm vào giỏ</a>
+                                <a href="cart-home?&id=${p.id}" class="btn btn-outlined btn-rounded btn-mid">Thêm vào
+                                    giỏ</a>
                             </div>
                             <div class="rating-widget mt--20">
                                 <a href="#" class="single-rating"><i class="fas fa-star"></i></a>
@@ -411,18 +414,27 @@
 
 <script>
     var isLoggedIn = <%= session.getAttribute("user") != null %>;
+
     function pollForDataChange() {
         if (isLoggedIn) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var responseText = xhr.responseText;
-                    console.log(responseText);
-                    if (responseText === "false") {
-                        alert("Dữ liệu hóa đơn của bạn đã bị thay đổi");
-                    } else if (responseText === "error") {
-                        console.error("An error occurred while checking for data change.");
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var responseText = xhr.responseText;
+                        console.log(responseText);
+                        if (responseText === "false") {
+                            alert("Dữ liệu hóa đơn của bạn đã bị thay đổi");
+                        } else if (responseText === "no_data") {
+                            /// tùy chinh code
+                        }
+                    } else if (xhr.status === 403) {
+                        // Key bị hủy, dừng việc polling
+                        console.log("Key của người dùng đã bị hủy. Dừng polling.");
+                        return;
                     }
+
+                    // Chờ 10 giây và tiếp tục polling
                     setTimeout(pollForDataChange, 10000);
                 }
             };
@@ -436,6 +448,7 @@
 
     // Run the function when the page is loaded
     pollForDataChange();
+
 
 </script>
 
