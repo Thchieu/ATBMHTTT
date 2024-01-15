@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="css/plugins.css" />
   <link rel="stylesheet" href="css/main.css" />
   <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico">
-  <script src="js/poling.js"></script>
   <title>Petmark ❤️</title>
 </head>
 <body class="petmark-theme-2">

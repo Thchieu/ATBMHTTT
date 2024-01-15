@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="css/plugins.css" />
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico">
-    <script src="js/poling.js"></script>
     <title>Petmark ❤️</title>
 </head>
 <body class="petmark-theme-2">
@@ -410,6 +409,35 @@
 </div>
 <!-- Modal -->
 
+<script>
+    var isLoggedIn = <%= session.getAttribute("user") != null %>;
+    function pollForDataChange() {
+        if (isLoggedIn) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var responseText = xhr.responseText;
+                    console.log(responseText);
+                    if (responseText === "false") {
+                        alert("Dữ liệu hóa đơn của bạn đã bị thay đổi");
+                    } else if (responseText === "error") {
+                        console.error("An error occurred while checking for data change.");
+                    }
+                    setTimeout(pollForDataChange, 10000);
+                }
+            };
+            xhr.open("GET", "/ATBMHTTT_war/PollingServlet", true);
+            xhr.send();
+        } else {
+            // User is not logged in, you may want to handle this case accordingly
+            console.log("User is not logged in. Polling aborted.");
+        }
+    }
+
+    // Run the function when the page is loaded
+    pollForDataChange();
+
+</script>
 
 <jsp:include page="footer/footer.jsp"></jsp:include>
 <script src="js/plugins.js"></script>
